@@ -3,10 +3,14 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import MarvelContextProvider from './MarvelContext'
+
 
 ReactDOM.render(
   <React.StrictMode>
+    <MarvelContextProvider>
     <App />
+    </MarvelContextProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
