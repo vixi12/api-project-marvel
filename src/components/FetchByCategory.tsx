@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { MarvelContext } from "../MarvelContext";
 import * as React from "react";
 import Box from "@mui/material/Box";
@@ -7,15 +7,36 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { width } from "@mui/system";
 
-
 const FetchByCategory = ({}) => {
-  const { fetchHeroes, marvelHeroeData }: any = useContext(MarvelContext);
+  const { fetchHeroes, marvelHeroeData, setMarvelHeroeData, fetchComics, setMarvelComicData }: any =
+    useContext(MarvelContext);
 
-  const [inputState, setInputState] : any = useState("");
+  const [inputState, setInputState]: any = useState("");
+
+  const handleFetch = async () => {
+    const response = await fetchHeroes(inputState);
+    const responseComics = await fetchComics(response.data.results[0].id);
+
+    function validComics(element: any, index: any, array: any) {
+      return element.description !== "" && element.description !== null;
+    }
+
+    const filteredResponse = responseComics.data.results.filter(validComics)
+    // console.log(filteredResponse, "AQUI")
+    // console.log(response, responseComics);
+    setMarvelHeroeData(response);
+    console.log(response)
+    setMarvelComicData(responseComics)
+  };
+
+  // useEffect(() => {
+
+  // },[marvelHeroeData]);
 
   return (
-    <div className = "fetchComp">
-      <Box className="api-input"
+    <div className="fetchComp">
+      <Box
+        className="api-input"
         component="form"
         sx={{
           "& > :not(style)": { m: 1, width: "25ch" },
@@ -32,15 +53,11 @@ const FetchByCategory = ({}) => {
           label="Outlined"
           variant="outlined"
         />
-        <Button onClick={() => fetchHeroes(inputState)} variant="contained">
+        <Button onClick={handleFetch} variant="contained">
           Fetch
         </Button>
       </Box>
       {console.log(inputState)}
-
-        <div className="api-info-display-block">
-          {/* <h3>{marvelHeroeData.data.results[0].name}</h3> */}
-        </div>
     </div>
   );
 };
