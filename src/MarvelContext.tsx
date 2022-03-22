@@ -14,7 +14,20 @@ const MarvelContextProvider = ({ children }: any) => {
   });
   const [marvelComicData, setMarvelComicData] = useState([]);
 
+
+
+
   const [marvelComicDetailedData, setMarvelComicDetailedData] = useState([]);
+
+  const [localStorageData, setLocalStorageData] = useState( () => {
+    const localData = localStorage.getItem('localStorageData');
+  });
+
+  useEffect(()=> {
+    localStorage.setItem('localStorageData', JSON.stringify(localStorageData))
+  }, [localStorageData])
+
+
 
   const fetchHeroes = async (characterName: String) => {
     try {
@@ -63,7 +76,7 @@ const MarvelContextProvider = ({ children }: any) => {
         setMarvelComicDetailedData,
         marvelHeroeData,
         marvelComicData,
-        marvelComicDetailedData
+        marvelComicDetailedData,
       }}
     >
       {children}
