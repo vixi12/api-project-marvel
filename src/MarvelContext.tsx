@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, useReducer } from "react";
 
 export const MarvelContext = createContext({});
 
@@ -14,20 +14,33 @@ const MarvelContextProvider = ({ children }: any) => {
   });
   const [marvelComicData, setMarvelComicData] = useState([]);
 
-
-
-
   const [marvelComicDetailedData, setMarvelComicDetailedData] = useState([]);
 
-  const [localStorageData, setLocalStorageData] = useState( () => {
-    const localData = localStorage.getItem('localStorageData');
-  });
+  const localStorageReducer = (state: any, action: any) => {
+    switch (action.type) {
+      case "setState":
+        return [...state, action];
+      default:
+        case "misco":
+          console.log("DALE")
+        return state;
+    }
+  };
 
-  useEffect(()=> {
-    localStorage.setItem('localStorageData', JSON.stringify(localStorageData))
-  }, [localStorageData])
+  const [localStorageData, dispatch] = useReducer(
+    localStorageReducer,
+    [],
+    () => {
+      const localData = localStorage.getItem('localStorageData');
+      return localData ? JSON.parse(localData) : []
+    }
 
+    
+  );
 
+  useEffect(() => {
+    localStorage.setItem("localStorageData", JSON.stringify(localStorageData));
+  }, [localStorageData]);
 
   const fetchHeroes = async (characterName: String) => {
     try {
@@ -74,9 +87,11 @@ const MarvelContextProvider = ({ children }: any) => {
         setMarvelHeroeData,
         setMarvelComicData,
         setMarvelComicDetailedData,
+        dispatch,
         marvelHeroeData,
         marvelComicData,
         marvelComicDetailedData,
+        localStorageData,
       }}
     >
       {children}
