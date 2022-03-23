@@ -1,15 +1,18 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState } from "react";
 import { MarvelContext } from "../MarvelContext";
 import * as React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 
 import Button from "@mui/material/Button";
-import { width } from "@mui/system";
 
-const FetchByCategory = ({}) => {
-  const { fetchHeroes, marvelHeroeData, setMarvelHeroeData, fetchComics, setMarvelComicData }: any =
-    useContext(MarvelContext);
+const FetchByCategory = () => {
+  const {
+    fetchHeroes,
+    setMarvelHeroeData,
+    fetchComics,
+    setMarvelComicData,
+  }: any = useContext(MarvelContext);
 
   const [inputState, setInputState]: any = useState("");
 
@@ -17,24 +20,19 @@ const FetchByCategory = ({}) => {
     const response = await fetchHeroes(inputState);
     const responseComics = await fetchComics(response.data.results[0].id);
 
-    function validComics(element: any, index: any, array: any) {
-      return element.description !== "" && element.description !== null;
-    }
-
-    const filteredResponse = responseComics.data.results.filter(validComics)
-    // console.log(filteredResponse, "AQUI")
-    // console.log(response, responseComics);
     setMarvelHeroeData(response);
-    console.log(response)
-    setMarvelComicData(responseComics)
+
+    setMarvelComicData(responseComics);
   };
-
-  // useEffect(() => {
-
-  // },[marvelHeroeData]);
 
   return (
     <div className="fetchComp">
+      <div  style={{display:"flex", flexDirection: "column", textAlign: "center", padding:"2rem"}}>
+      <h1> Welcome to your Comic Wiki</h1>
+      <p>Please, introduce the name of your desired character from Marvel</p>
+      <span>Note: Type the name of the character as in the example</span> 
+      <span>Ex: Captain America</span>
+      </div>
       <Box
         className="api-input"
         component="form"

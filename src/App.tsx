@@ -18,7 +18,5 @@ function App() {
 }
 
 export default App;
-function componentWillMount() {
-  throw new Error("Function not implemented.");
-}
+
 

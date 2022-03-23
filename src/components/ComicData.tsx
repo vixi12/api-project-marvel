@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState} from "react";
 import { MarvelContext } from "../MarvelContext";
 import * as React from "react";
 import Box from "@mui/material/Box";
@@ -38,8 +38,7 @@ const ComicData = ({}) => {
     localStorageData,
   }: any = useContext(MarvelContext);
 
-  const [open, setOpen] = React.useState(false);
-  const [comicSelected, setComicSelected] = useState();
+  const [open, setOpen] = useState(false);
 
   const matchOnClick = (key: any) => {
     function validUpc(element: any, index: any, array: any) {
@@ -54,11 +53,24 @@ const ComicData = ({}) => {
 
   const setFavorite = async (key: any) => {
     let comicSelected = matchOnClick(key);
-    let DetailedComicDataResponse = await fetchComicDetailed(comicSelected);
-    dispatch({
-      type: "setState",
-      newState: DetailedComicDataResponse.data.results[0],
-    });
+
+    console.log(comicSelected);
+
+    let exists = localStorageData.map(
+      (comic: any) => comic.newState.id === comicSelected
+    );
+    console.log(exists);
+
+    if (exists.includes(true)) {
+      alert("You've already added that comic to favourites");
+    } else {
+      let DetailedComicDataResponse = await fetchComicDetailed(comicSelected);
+      dispatch({
+        type: "setState",
+        newState: DetailedComicDataResponse.data.results[0],
+      });
+    }
+
     console.log(localStorageData);
   };
 
@@ -103,8 +115,11 @@ const ComicData = ({}) => {
   console.log(marvelComicDetailedData);
 
   return Object.keys(marvelComicData).length === 0 ? (
-    <div>
+ 
+    <div style={{display: "flex", flexDirection: "column"}}>
+            <h1 style={{textAlign: "center", padding:"2rem"}}>Favorite comics:</h1>
       <div className="comic-list">
+
         {localStorageData.map((eachComic: any) => (
           <div style={{ display: "flex", flexDirection: "column" }}>
             <Card
@@ -144,7 +159,7 @@ const ComicData = ({}) => {
                 maxWidth: 1500,
                 display: "flex",
                 justifyContent: "center",
-                overflow: "scroll"
+                overflow: "scroll",
               }}
             >
               <Card sx={{ width: 1200, height: 800, display: "flex" }}>

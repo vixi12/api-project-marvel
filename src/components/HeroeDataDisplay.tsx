@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext } from "react";
 import { MarvelContext } from "../MarvelContext";
 import * as React from "react";
 import Card from "@mui/material/Card";
@@ -13,33 +13,26 @@ const FetchByCategory = ({}) => {
     Object.keys(marvelHeroeData).length === 0 ||
     Object.keys(marvelHeroeData).length === 1
   ) {
-    return (
-      <div>
-        <p>NO HAY NADA</p>
-      </div>
-    );
+    return null;
   } else {
     return (
       <div className="heroe-data">
         <div className="api-info-display-block">
-          
           <h2>{marvelHeroeData.data.results[0].name}</h2>
 
-        <Card sx={{width: 700, display: "flex"}}>
-              <CardMedia
-                component="img"
-                height="400"
-                image={`${marvelHeroeData.data.results[0].thumbnail.path}.${marvelHeroeData.data.results[0].thumbnail.extension}`}
-                alt="green iguana"
-              />
-              <CardContent>
-                <Typography gutterBottom variant="h6" component="div">
+          <Card sx={{ width: 700, display: "flex" }}>
+            <CardMedia
+              component="img"
+              height="400"
+              image={`${marvelHeroeData.data.results[0].thumbnail.path}.${marvelHeroeData.data.results[0].thumbnail.extension}`}
+              alt="green iguana"
+            />
+            <CardContent>
+              <Typography gutterBottom variant="h6" component="div">
                 {marvelHeroeData.data.results[0].description}
-
-                </Typography>
-              
-              </CardContent>
-            </Card>
+              </Typography>
+            </CardContent>
+          </Card>
 
           {/* <h3 className="title">{marvelHeroeData.data.results[0].name}</h3>
           <div className="heroe-main-info">
