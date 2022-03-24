@@ -3,10 +3,13 @@ import FetchByCategory from "./components/FetchByCategory";
 import HeroeData from "./components/HeroeDataDisplay"
 import ComicData from "./components/ComicData"
 import { Modal } from "@mui/material";
+import { Toaster } from "react-hot-toast";
 
 
 
 function App() {
+
+  
 
 
 
@@ -14,6 +17,10 @@ function App() {
     <FetchByCategory/>
     <HeroeData/>
     <ComicData/>
+    <Toaster
+  position="top-center"
+  reverseOrder={false}
+/>
   </div>;
 }
 

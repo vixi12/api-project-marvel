@@ -13,6 +13,7 @@ import { List, ListItem } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import {toast} from "react-hot-toast";
 
 const style = {
   position: "absolute" as "absolute",
@@ -20,7 +21,7 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: "85%",
-  overflow: "scroll",
+  overflow: "auto",
   height: "100vh",
   bgcolor: "white",
   border: "2px solid #000",
@@ -54,12 +55,10 @@ const ComicData = ({}) => {
   const setFavorite = async (key: any) => {
     let comicSelected = matchOnClick(key);
 
-    console.log(comicSelected);
 
     let exists = localStorageData.map(
       (comic: any) => comic.newState.id === comicSelected
     );
-    console.log(exists);
 
     if (exists.includes(true)) {
       alert("You've already added that comic to favourites");
@@ -70,13 +69,13 @@ const ComicData = ({}) => {
         newState: DetailedComicDataResponse.data.results[0],
       });
     }
+    
+    toast.success("Added!")
 
-    console.log(localStorageData);
   };
 
   const handleOpen = async (key: any) => {
     const selectedComic = matchOnClick(key);
-    console.log(selectedComic);
 
     const DetailedComicDataResponse = await fetchComicDetailed(selectedComic);
     setMarvelComicDetailedData(DetailedComicDataResponse.data.results[0]);
@@ -88,18 +87,14 @@ const ComicData = ({}) => {
       return element.newState.id === key;
     }
 
-    console.log(localStorageData);
     let selectedObject: any = localStorageData.filter(validUpc);
-    console.log(selectedObject);
 
     let selectedComic = selectedObject[0].newState.id;
     return selectedComic;
   };
 
   const handleOpenStored = async (key: any) => {
-    console.log(key);
     const selectedComic = matchOnClickStored(key);
-    console.log(selectedComic, "THI");
 
     const DetailedComicDataResponse = await fetchComicDetailed(selectedComic);
     setMarvelComicDetailedData(DetailedComicDataResponse.data.results[0]);
@@ -112,7 +107,6 @@ const ComicData = ({}) => {
     backgroundColor: theme.palette.background.paper,
   }));
 
-  console.log(marvelComicDetailedData);
 
   return Object.keys(marvelComicData).length === 0 ? (
  
@@ -265,7 +259,6 @@ const ComicData = ({}) => {
               >
                 <FavoriteBorderIcon></FavoriteBorderIcon>
               </Button>
-              {console.log(localStorageData)}
               <Card
                 onClick={() => handleOpen(eachComic.id)}
                 key={eachComic.id + "Comid-ID"}

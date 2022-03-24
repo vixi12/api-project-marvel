@@ -3,6 +3,7 @@ import { MarvelContext } from "../MarvelContext";
 import * as React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
+import { toast } from "react-hot-toast";
 
 import Button from "@mui/material/Button";
 
@@ -18,20 +19,37 @@ const FetchByCategory = () => {
 
   const handleFetch = async () => {
     const response = await fetchHeroes(inputState);
-    const responseComics = await fetchComics(response.data.results[0].id);
+    console.log(response)
+    if (!response.data.count) {
+      console.log("AQUI")
+      toast.error("Ups, theres no character with that name");
+    } else {
+      const responseComics = await fetchComics(response.data.results[0].id);
 
-    setMarvelHeroeData(response);
+      if (!responseComics.data.count) {
+        toast.error("Ups, theres no comic to show with that name");
+      }
 
-    setMarvelComicData(responseComics);
+      setMarvelHeroeData(response);
+
+      setMarvelComicData(responseComics);
+    }
   };
 
   return (
     <div className="fetchComp">
-      <div  style={{display:"flex", flexDirection: "column", textAlign: "center", padding:"2rem"}}>
-      <h1> Welcome to your Comic Wiki</h1>
-      <p>Please, introduce the name of your desired character from Marvel</p>
-      <span>Note: Type the name of the character as in the example</span> 
-      <span>Ex: Captain America</span>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          textAlign: "center",
+          padding: "2rem",
+        }}
+      >
+        <h1> Welcome to your Comic Wiki</h1>
+        <p>Please, introduce the name of your desired character from Marvel</p>
+        <span>Note: Type the name of the character as in the example</span>
+        <span>Ex: Captain America</span>
       </div>
       <Box
         className="api-input"
@@ -55,7 +73,6 @@ const FetchByCategory = () => {
           Fetch
         </Button>
       </Box>
-      {console.log(inputState)}
     </div>
   );
 };

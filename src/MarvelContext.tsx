@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect, useReducer } from "react";
+import toast from "react-hot-toast";
 
 export const MarvelContext = createContext({});
 
@@ -47,10 +48,10 @@ const MarvelContextProvider = ({ children }: any) => {
       const response = await fetch(
         `https://gateway.marvel.com:443/v1/public/characters?name=${characterName}&ts=1&apikey=62b3a48de764aef294237d6195c9871c&hash=9e71f438546e90c1d56f4fc9f4364bf0`
       );
-
       return response.json();
     } catch (e) {
       console.error(e);
+      toast.success('Something went wrong :(');
     }
   };
 
