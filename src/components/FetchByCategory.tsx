@@ -17,7 +17,7 @@ const FetchByCategory = () => {
 
   const [inputState, setInputState]: any = useState("");
 
-  const handleFetch = async () => {
+  const handleFetch = async () => { 
     const response = await fetchHeroes(inputState);
     console.log(response)
     if (!response.data.count) {

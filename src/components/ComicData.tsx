@@ -1,4 +1,4 @@
-import { useContext, useState} from "react";
+import { useContext, useState } from "react";
 import { MarvelContext } from "../MarvelContext";
 import * as React from "react";
 import Box from "@mui/material/Box";
@@ -13,7 +13,7 @@ import { List, ListItem } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import {toast} from "react-hot-toast";
+import { toast } from "react-hot-toast";
 
 const style = {
   position: "absolute" as "absolute",
@@ -39,25 +39,32 @@ const ComicData = ({}) => {
     localStorageData,
   }: any = useContext(MarvelContext);
 
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState<boolean>(false);
 
-  const matchOnClick = (key: any) => {
-    function validUpc(element: any, index: any, array: any) {
-      return element.id === key;
-    }
+  type comicObject = {
+    id: number;
+  };
 
-    let selectedObject: any = marvelComicData.data.results.filter(validUpc);
-
+  const matchOnClick = (key: number) => {
+    let selectedObject: Array<comicObject>;
+    selectedObject = marvelComicData.data.results.filter(
+      (element: { id: number }) => element.id === key
+    );
     let selectedComic = selectedObject[0].id;
     return selectedComic;
   };
 
-  const setFavorite = async (key: any) => {
+  type storedComicObject = {
+    newState: {
+      id: number;
+    };
+  };
+
+  const setFavorite = async (key: number) => {
     let comicSelected = matchOnClick(key);
 
-
-    let exists = localStorageData.map(
-      (comic: any) => comic.newState.id === comicSelected
+    let exists: Array<boolean> = localStorageData.map(
+      (comic: storedComicObject) => comic.newState.id === comicSelected
     );
 
     if (exists.includes(true)) {
@@ -69,34 +76,37 @@ const ComicData = ({}) => {
         newState: DetailedComicDataResponse.data.results[0],
       });
     }
-    
-    toast.success("Added!")
-
+    toast.success("Added!");
   };
 
-  const handleOpen = async (key: any) => {
-    const selectedComic = matchOnClick(key);
+  type fetchedComic = {
+    data: {
+      results: Array<object>;
+    };
+  };
 
-    const DetailedComicDataResponse = await fetchComicDetailed(selectedComic);
+  const handleOpen = async (key: number) => {
+    const selectedComic = matchOnClick(key);
+    const DetailedComicDataResponse: fetchedComic = await fetchComicDetailed(
+      selectedComic
+    );
+    console.log(DetailedComicDataResponse);
     setMarvelComicDetailedData(DetailedComicDataResponse.data.results[0]);
     setOpen(true);
   };
 
-  const matchOnClickStored = (key: any) => {
-    function validUpc(element: any, index: any, array: any) {
-      return element.newState.id === key;
-    }
-
-    let selectedObject: any = localStorageData.filter(validUpc);
-
+  const matchOnClickStored = (key: number) => {
+    let selectedObject: Array<storedComicObject> = localStorageData.filter(
+      (element: { newState: { id: number } }) => element.newState.id === key
+    );
     let selectedComic = selectedObject[0].newState.id;
     return selectedComic;
   };
 
-  const handleOpenStored = async (key: any) => {
+  const handleOpenStored = async (key: number) => {
     const selectedComic = matchOnClickStored(key);
-
-    const DetailedComicDataResponse = await fetchComicDetailed(selectedComic);
+    const DetailedComicDataResponse : fetchedComic = await fetchComicDetailed(selectedComic);
+    console.log(DetailedComicDataResponse)
     setMarvelComicDetailedData(DetailedComicDataResponse.data.results[0]);
     setOpen(true);
   };
@@ -107,13 +117,10 @@ const ComicData = ({}) => {
     backgroundColor: theme.palette.background.paper,
   }));
 
-
   return Object.keys(marvelComicData).length === 0 ? (
- 
-    <div style={{display: "flex", flexDirection: "column"}}>
-            <h1 style={{textAlign: "center", padding:"2rem"}}>Favorite comics:</h1>
+    <div style={{ display: "flex", flexDirection: "column" }}>
+      <h1 style={{ textAlign: "center", padding: "2rem" }}>Favorite comics:</h1>
       <div className="comic-list">
-
         {localStorageData.map((eachComic: any) => (
           <div style={{ display: "flex", flexDirection: "column" }}>
             <Card
