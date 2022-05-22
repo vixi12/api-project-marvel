@@ -7,7 +7,7 @@ import { toast } from "react-hot-toast";
 import Button from "@mui/material/Button";
 import * as Ttype from "../types";
 
-const FetchByCategory = () => {
+const FavoriteComics = () => {
   const {
     fetchHeroes,
     setMarvelHeroeData,
@@ -78,4 +78,4 @@ const FetchByCategory = () => {
   );
 };
 
-export default FetchByCategory;
+export default FavoriteComics;

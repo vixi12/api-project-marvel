@@ -5,7 +5,7 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 
-const FetchByCategory = ({}) => {
+const HeroeDataDisplay = ({}) => {
   const { marvelHeroeData }: any = useContext(MarvelContext);
 
   if (
@@ -38,4 +38,4 @@ const FetchByCategory = ({}) => {
   }
 };
 
-export default FetchByCategory;
+export default HeroeDataDisplay;

@@ -14,6 +14,7 @@ import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { toast } from "react-hot-toast";
+import * as Ttype from "../types";
 
 const style = {
   position: "absolute" as "absolute",
@@ -41,12 +42,9 @@ const ComicData = ({}) => {
 
   const [open, setOpen] = useState<boolean>(false);
 
-  type comicObject = {
-    id: number;
-  };
 
   const matchOnClick = (key: number) => {
-    let selectedObject: Array<comicObject>;
+    let selectedObject: Array<Ttype.comicObject>;
     selectedObject = marvelComicData.data.results.filter(
       (element: { id: number }) => element.id === key
     );
@@ -54,17 +52,11 @@ const ComicData = ({}) => {
     return selectedComic;
   };
 
-  type storedComicObject = {
-    newState: {
-      id: number;
-    };
-  };
-
   const setFavorite = async (key: number) => {
     let comicSelected = matchOnClick(key);
 
     let exists: Array<boolean> = localStorageData.map(
-      (comic: storedComicObject) => comic.newState.id === comicSelected
+      (comic: Ttype.storedComicObject) => comic.newState.id === comicSelected
     );
 
     if (exists.includes(true)) {
@@ -79,24 +71,20 @@ const ComicData = ({}) => {
     toast.success("Added!");
   };
 
-  type fetchedComic = {
-    data: {
-      results: Array<object>;
-    };
-  };
-
   const handleOpen = async (key: number) => {
     const selectedComic = matchOnClick(key);
-    const DetailedComicDataResponse: fetchedComic = await fetchComicDetailed(
+    const DetailedComicDataResponse: Ttype.fetchedComic = await fetchComicDetailed(
       selectedComic
     );
-    console.log(DetailedComicDataResponse);
+
+    console.log(DetailedComicDataResponse)
+
     setMarvelComicDetailedData(DetailedComicDataResponse.data.results[0]);
     setOpen(true);
   };
 
   const matchOnClickStored = (key: number) => {
-    let selectedObject: Array<storedComicObject> = localStorageData.filter(
+    let selectedObject: Array<Ttype.storedComicObject> = localStorageData.filter(
       (element: { newState: { id: number } }) => element.newState.id === key
     );
     let selectedComic = selectedObject[0].newState.id;
@@ -105,8 +93,9 @@ const ComicData = ({}) => {
 
   const handleOpenStored = async (key: number) => {
     const selectedComic = matchOnClickStored(key);
-    const DetailedComicDataResponse : fetchedComic = await fetchComicDetailed(selectedComic);
-    console.log(DetailedComicDataResponse)
+    const DetailedComicDataResponse: Ttype.fetchedComic = await fetchComicDetailed(
+      selectedComic
+    );
     setMarvelComicDetailedData(DetailedComicDataResponse.data.results[0]);
     setOpen(true);
   };
@@ -121,7 +110,7 @@ const ComicData = ({}) => {
     <div style={{ display: "flex", flexDirection: "column" }}>
       <h1 style={{ textAlign: "center", padding: "2rem" }}>Favorite comics:</h1>
       <div className="comic-list">
-        {localStorageData.map((eachComic: any) => (
+        {localStorageData.map((eachComic: Ttype.storedComicObject) => (
           <div style={{ display: "flex", flexDirection: "column" }}>
             <Card
               onClick={() => handleOpenStored(eachComic.newState.id)}
@@ -256,7 +245,7 @@ const ComicData = ({}) => {
         <h2>COMICS</h2>
 
         <div className="comic-list">
-          {marvelComicData.data.results.map((eachComic: any) => (
+          {marvelComicData.data.results.map((eachComic: Ttype.comicObject) => (
             <div style={{ display: "flex", flexDirection: "column" }}>
               <Button
                 onClick={() => setFavorite(eachComic.id)}

@@ -22,8 +22,6 @@ const MarvelContextProvider = ({ children }: any) => {
       case "setState":
         return [...state, action];
       default:
-        case "misco":
-          console.log("DALE")
         return state;
     }
   };
@@ -78,6 +76,9 @@ const MarvelContextProvider = ({ children }: any) => {
       console.error(e);
     }
   };
+  
+
+  
 
   return (
     <MarvelContext.Provider
