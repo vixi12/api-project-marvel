@@ -23,7 +23,7 @@ const FetchByCategory = () => {
     if (!heroesResponse.data.count) {
       toast.error("Ups, theres no character with that name");
     } else {
-      const responseComics : Ttype.fetchedComic = await fetchComics(
+      const responseComics: Ttype.fetchedComic = await fetchComics(
         heroesResponse.data.results[0].id
       );
 

@@ -4,17 +4,9 @@ import toast from "react-hot-toast";
 export const MarvelContext = createContext({});
 
 const MarvelContextProvider = ({ children }: any) => {
-  const [marvelHeroeData, setMarvelHeroeData] = useState({
-    data: {
-      results: [
-        {
-          id: "",
-        },
-      ],
-    },
-  });
+  const [marvelHeroeData, setMarvelHeroeData] = useState({});
+  const [open, setOpen] = useState<boolean>(false);
   const [marvelComicData, setMarvelComicData] = useState([]);
-
   const [marvelComicDetailedData, setMarvelComicDetailedData] = useState([]);
 
   const localStorageReducer = (state: any, action: any) => {
@@ -30,11 +22,9 @@ const MarvelContextProvider = ({ children }: any) => {
     localStorageReducer,
     [],
     () => {
-      const localData = localStorage.getItem('localStorageData');
-      return localData ? JSON.parse(localData) : []
+      const localData = localStorage.getItem("localStorageData");
+      return localData ? JSON.parse(localData) : [];
     }
-
-    
   );
 
   useEffect(() => {
@@ -49,7 +39,7 @@ const MarvelContextProvider = ({ children }: any) => {
       return response.json();
     } catch (e) {
       console.error(e);
-      toast.success('Something went wrong :(');
+      toast.success("Something went wrong :(");
     }
   };
 
@@ -76,13 +66,11 @@ const MarvelContextProvider = ({ children }: any) => {
       console.error(e);
     }
   };
-  
-
-  
 
   return (
     <MarvelContext.Provider
       value={{
+        open,
         fetchHeroes,
         fetchComics,
         fetchComicDetailed,
@@ -90,6 +78,7 @@ const MarvelContextProvider = ({ children }: any) => {
         setMarvelComicData,
         setMarvelComicDetailedData,
         dispatch,
+        setOpen,
         marvelHeroeData,
         marvelComicData,
         marvelComicDetailedData,

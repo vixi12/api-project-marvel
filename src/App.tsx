@@ -1,5 +1,5 @@
 import "./App.css";
-import FetchByCategory from "./components/FetchByCategory";
+import FetchHeroe from "./components/FetchHeroe";
 import HeroeData from "./components/HeroeDataDisplay";
 import ComicData from "./components/ComicData";
 import { Toaster } from "react-hot-toast";
@@ -7,7 +7,7 @@ import { Toaster } from "react-hot-toast";
 function App() {
   return (
     <div className="App">
-      <FetchByCategory />
+      <FetchHeroe />
       <HeroeData />
       <ComicData />
       <Toaster position="top-center" reverseOrder={false} />
